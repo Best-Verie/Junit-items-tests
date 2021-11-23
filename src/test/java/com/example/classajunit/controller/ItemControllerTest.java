@@ -60,4 +60,23 @@ public class ItemControllerTest {
 						"{\"id\":1,\"name\":\"Samuel\",\"price\":1,\"quantity\":10}"))
 				.andReturn();
 	}
+
+
+	@Test
+	public void getByOne_404() throws Exception {
+		Item item = new Item(1,"Samuel",1,10);
+
+		when(itemServiceMock.getById(item.getId())).thenReturn(item);
+
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+				.get("/all-items/2")
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc
+				.perform(request)
+				.andExpect(status().isNotFound())
+				.andExpect(content().string("Item Not found"))
+				.andReturn();
+
+	}
 }
